@@ -1,9 +1,12 @@
-package fr.legris.pokedex
+package fr.legris.pokedex.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import fr.legris.pokedex.ui.main.MainFragment
+import dagger.hilt.android.AndroidEntryPoint
+import fr.legris.pokedex.R
+import fr.legris.pokedex.ui.pokemonlist.PokeListFragment
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MainFragment.newInstance())
+                    .replace(R.id.container, PokeListFragment.newInstance())
                     .commitNow()
         }
     }
