@@ -1,26 +1,30 @@
 package fr.legris.pokedex.data.bdd.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.paging.PagingSource
+import androidx.room.*
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
 
 @Dao
 interface PokemonDao {
     @Query("SELECT * FROM pokemonEntity")
-    fun getAll(): List<PokemonEntity>
+    suspend fun getAll(): List<PokemonEntity>
+
+    @Query("SELECT * FROM pokemonEntity")
+    fun pagingSource(): PagingSource<Int, PokemonEntity>
 
     @Query("SELECT * FROM pokemonEntity WHERE id IN (:userIds)")
-    fun loadAllByIds(userIds: IntArray): List<PokemonEntity>
+    suspend fun loadAllByIds(userIds: IntArray): List<PokemonEntity>
 
     @Query("SELECT * FROM pokemonEntity WHERE name LIKE :name LIMIT 1")
-    fun findByName(name : String): PokemonEntity
+    suspend fun findByName(name : String): PokemonEntity
 
-    @Insert
-    fun insertAll(vararg users: PokemonEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(pokemonList: List<PokemonEntity>)
 
     @Delete
-    fun delete(user: PokemonEntity)
+    suspend fun delete(pokemon: PokemonEntity)
+
+    @Query("DELETE FROM pokemonEntity")
+    suspend fun deleteAll()
 }
 
