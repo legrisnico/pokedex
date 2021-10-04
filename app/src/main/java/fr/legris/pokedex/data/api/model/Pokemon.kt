@@ -21,4 +21,4 @@ data class Pokemon (
         @SerializedName("sprites") val sprites : Sprites,
         @SerializedName("stats") val stats : List<Stats>,
         @SerializedName("types") val types : List<Types>
-)
+) : ApiModel

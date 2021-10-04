@@ -12,4 +12,4 @@ data class PokemonEntity(
     val name: String,
     @ColumnInfo(name = "main_picture_url")
     val mainPictureUrl: String
-)
+): DbEntity
