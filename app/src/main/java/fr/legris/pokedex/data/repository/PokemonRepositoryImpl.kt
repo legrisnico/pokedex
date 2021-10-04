@@ -5,12 +5,12 @@ import fr.legris.pokedex.data.api.model.PokemonList
 import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
-        private val pokemonService: PokemonService
+    private val pokemonService: PokemonService
 ) : PokemonRepository {
 
     override suspend fun getPokeList(offset: Int, limit: Int): PokemonList =
-            pokemonService.listPokemon(offset, limit).apply {
-                
-            }
+        pokemonService.listPokemon(offset, limit).apply {
+
+        }
 
 }

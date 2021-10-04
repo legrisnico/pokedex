@@ -48,7 +48,7 @@ class PokemonListRemoteMediator(
             }
 
             pokemonDao.insertAll(
-                PokemonMapper.mapPokemonListToPokemonEntityList(response.results)
+                PokemonMapper().mapFromApiModelList(response.results)
             )
 
 

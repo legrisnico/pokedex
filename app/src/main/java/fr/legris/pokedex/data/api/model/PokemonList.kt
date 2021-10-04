@@ -7,4 +7,4 @@ data class PokemonList(
     @SerializedName("next") val next : String?,
     @SerializedName("previous") val previous : String?,
     @SerializedName("results") val results : List<Pokemon>
-)
+) : ApiModel

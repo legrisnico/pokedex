@@ -3,21 +3,20 @@ package fr.legris.pokedex.data.mappers
 import fr.legris.pokedex.data.api.model.Pokemon
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
 
-class PokemonMapper {
-    companion object{
+class PokemonMapper: DbEntityMapper<PokemonEntity, Pokemon> {
 
-        fun mapPokemonListToPokemonEntityList(pokemonList: List<Pokemon>) : List<PokemonEntity> =
-            pokemonList.map { pokemon ->
-                mapPokemonToPokemonEntity(pokemon)
-            }
+    override fun mapFromApiModel(apiModel: Pokemon): PokemonEntity {
+        val id = apiModel.url.split("/")[apiModel.url.split("/").size - 2].toInt()
+        return PokemonEntity(
+            id,
+            apiModel.name,
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
+        )
+    }
 
-        private fun mapPokemonToPokemonEntity(pokemon: Pokemon) : PokemonEntity {
-            val id = pokemon.url.split("/")[pokemon.url.split("/").size - 2].toInt()
-            return PokemonEntity(
-                id,
-                pokemon.name,
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
-            )
+    override fun mapFromApiModelList(apiModelList: List<Pokemon>): List<PokemonEntity>  {
+        return apiModelList.map { pokemon ->
+            mapFromApiModel(pokemon)
         }
     }
 }
