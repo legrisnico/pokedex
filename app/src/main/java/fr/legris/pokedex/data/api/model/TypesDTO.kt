@@ -2,8 +2,8 @@ package fr.legris.pokedex.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Types (
+data class TypesDTO (
 
 	@SerializedName("slot") val slot : Int,
-	@SerializedName("type") val type : Type
+	@SerializedName("type") val typeDTO : TypeDTO
 )

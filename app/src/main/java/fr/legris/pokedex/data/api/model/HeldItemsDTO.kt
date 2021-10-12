@@ -2,8 +2,8 @@ package fr.legris.pokedex.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class HeldItems (
+data class HeldItemsDTO (
 
-        @SerializedName("item") val item : Item,
+        @SerializedName("item") val itemDTO : ItemDTO,
         @SerializedName("version_details") val versionDetails : List<VersionDetails>
 )

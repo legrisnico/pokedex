@@ -1,8 +1,12 @@
 package fr.legris.pokedex.data.repository
 
-import fr.legris.pokedex.data.api.model.PokemonList
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingData
+import fr.legris.pokedex.ui.model.Pokemon
+import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
-    suspend fun getPokeList(offset: Int, limit: Int): PokemonList
+    @ExperimentalPagingApi
+    fun getPokemonList(): Flow<PagingData<Pokemon>>
 }

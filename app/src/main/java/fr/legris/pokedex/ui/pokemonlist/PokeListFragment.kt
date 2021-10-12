@@ -29,9 +29,6 @@ class PokeListFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(PokeListViewModel::class.java)
 
-        viewModel.pokemonList.observe(viewLifecycleOwner, {
-            Log.d("POKEMON LIST", it.toString())
-        })
     }
 
 }

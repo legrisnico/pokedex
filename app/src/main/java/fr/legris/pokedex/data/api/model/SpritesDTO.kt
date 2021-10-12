@@ -2,7 +2,7 @@ package fr.legris.pokedex.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Sprites (
+data class SpritesDTO (
 
 	@SerializedName("back_female") val back_female : String,
 	@SerializedName("back_shiny_female") val back_shiny_female : String,

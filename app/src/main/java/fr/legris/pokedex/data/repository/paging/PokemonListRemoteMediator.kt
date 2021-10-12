@@ -1,4 +1,4 @@
-package fr.legris.pokedex.data.repository
+package fr.legris.pokedex.data.repository.paging
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi

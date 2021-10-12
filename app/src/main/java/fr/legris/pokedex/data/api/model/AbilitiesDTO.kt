@@ -2,9 +2,9 @@ package fr.legris.pokedex.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Abilities (
+data class AbilitiesDTO (
 
 	@SerializedName("is_hidden") val isHidden : Boolean,
 	@SerializedName("slot") val slot : Int,
-	@SerializedName("ability") val ability : Ability
+	@SerializedName("ability") val abilityDTO : AbilityDTO
 )

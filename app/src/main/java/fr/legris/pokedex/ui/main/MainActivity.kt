@@ -23,19 +23,18 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import dagger.hilt.android.AndroidEntryPoint
-import fr.legris.pokedex.data.bdd.model.PokemonEntity
+import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.ui.theme.PokedexTheme
 import kotlinx.coroutines.flow.Flow
 
+@ExperimentalCoilApi
+@ExperimentalPagingApi
+@ExperimentalFoundationApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-
-    @ExperimentalPagingApi
-    @ExperimentalCoilApi
-    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,8 +52,8 @@ class MainActivity : ComponentActivity() {
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun PokemonList(pokemonFlow: Flow<PagingData<PokemonEntity>>) {
-    val lazyPokemonItems: LazyPagingItems<PokemonEntity> = pokemonFlow.collectAsLazyPagingItems()
+fun PokemonList(pokemonFlow: Flow<PagingData<Pokemon>>) {
+    val lazyPokemonItems: LazyPagingItems<Pokemon> = pokemonFlow.collectAsLazyPagingItems()
     LazyVerticalGrid(
         cells = GridCells.Fixed(4)
     ) {
@@ -69,7 +68,7 @@ fun PokemonList(pokemonFlow: Flow<PagingData<PokemonEntity>>) {
 
 @ExperimentalCoilApi
 @Composable
-fun Pokemon(pokemon: PokemonEntity) {
+fun Pokemon(pokemon: Pokemon) {
     PokedexTheme {
         Column(
             modifier = Modifier.height(128.dp),
