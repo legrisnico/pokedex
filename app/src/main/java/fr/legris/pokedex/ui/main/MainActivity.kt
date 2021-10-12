@@ -6,12 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -23,6 +25,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import dagger.hilt.android.AndroidEntryPoint
+import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.ui.theme.PokedexTheme
 import kotlinx.coroutines.flow.Flow
@@ -71,14 +74,26 @@ fun PokemonList(pokemonFlow: Flow<PagingData<Pokemon>>) {
 fun Pokemon(pokemon: Pokemon) {
     PokedexTheme {
         Column(
-            modifier = Modifier.height(128.dp),
+            modifier = Modifier
+                .height(128.dp)
+                .clickable(
+                    onClick = { /* TODO : go to pokemon details */ }
+                ),
             verticalArrangement = Arrangement.Bottom
         ) {
             Image(
-                painter = rememberImagePainter(pokemon.mainPictureUrl),
+                painter = rememberImagePainter(
+                    data = pokemon.mainPictureUrl,
+                    builder = {
+                        crossfade(true)
+                        placeholder(R.drawable.ic_baseline_help_outline_24)
+                    }
+                ),
                 contentDescription = "Image de ${pokemon.name}",
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(0.70f)
-                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.70f)
+            )
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
