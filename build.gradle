@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = "1.5.30"
+        kotlin_version = "1.5.31"
         hilt_version = '2.37'
-        compose_version = '1.0.3'
-        room_version = "2.3.0"
+        compose_version = '1.0.4'
+        room_version = "2.4.0-beta01"
         paging_version = "3.0.1"
     }
 

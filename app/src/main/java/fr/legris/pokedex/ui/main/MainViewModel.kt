@@ -9,11 +9,4 @@ import fr.legris.pokedex.data.repository.PokemonRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-    pokemonRepository: PokemonRepository
-) : ViewModel() {
-
-    @ExperimentalPagingApi
-    val pokemonFlow = pokemonRepository.getPokemonList().cachedIn(viewModelScope)
-
-}
+class MainViewModel @Inject constructor() : ViewModel()
