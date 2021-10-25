@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.Flow
 fun PokemonListView(navController: NavController, pokemonFlow: Flow<PagingData<Pokemon>>) {
     val lazyPokemonItems: LazyPagingItems<Pokemon> = pokemonFlow.collectAsLazyPagingItems()
     LazyVerticalGrid(
-        cells = GridCells.Fixed(4)
+        cells = GridCells.Fixed(3)
     ) {
         items(lazyPokemonItems.itemCount) { index ->
             lazyPokemonItems[index]?.let {
