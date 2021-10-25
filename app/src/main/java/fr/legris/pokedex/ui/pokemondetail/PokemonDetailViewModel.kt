@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PokeDetailViewModel @Inject constructor(
+class PokemonDetailViewModel @Inject constructor(
 
 ) : ViewModel() {
 

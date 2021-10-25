@@ -9,8 +9,11 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -24,14 +27,14 @@ import kotlinx.coroutines.flow.Flow
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun PokemonList(pokemonFlow: Flow<PagingData<Pokemon>>) {
+fun PokemonListView(navController: NavController, pokemonFlow: Flow<PagingData<Pokemon>>) {
     val lazyPokemonItems: LazyPagingItems<Pokemon> = pokemonFlow.collectAsLazyPagingItems()
     LazyVerticalGrid(
         cells = GridCells.Fixed(4)
     ) {
         items(lazyPokemonItems.itemCount) { index ->
             lazyPokemonItems[index]?.let {
-                Pokemon(it)
+                Pokemon(navController, it)
             }
         }
     }
@@ -40,14 +43,14 @@ fun PokemonList(pokemonFlow: Flow<PagingData<Pokemon>>) {
 
 @ExperimentalCoilApi
 @Composable
-fun Pokemon(pokemon: Pokemon) {
+fun Pokemon(navController: NavController, pokemon: Pokemon) {
     PokedexTheme {
         Column(
             modifier = Modifier
                 .height(128.dp)
                 .padding(4.dp)
                 .clickable(
-                    onClick = { /* TODO : go to pokemon details */ }
+                    onClick = { navController.navigate("pokemonDetail") }
                 ),
             verticalArrangement = Arrangement.Bottom
         ) {

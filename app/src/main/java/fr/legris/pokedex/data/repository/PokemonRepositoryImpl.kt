@@ -29,4 +29,7 @@ class PokemonRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getPokemonById(id: Long): Flow<Pokemon> {
+        TODO("Not yet implemented")
+    }
 }

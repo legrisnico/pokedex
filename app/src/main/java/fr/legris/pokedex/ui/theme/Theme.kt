@@ -5,17 +5,19 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = redDark,
+    primaryVariant = red,
+    secondary = yellow
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
+    primary = redLight,
+    primaryVariant = red,
+    secondary = yellow
 
     /* Other default colors to override
     background = Color.White,
@@ -34,6 +36,9 @@ fun PokedexTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
     } else {
         LightColorPalette
     }
+
+    rememberSystemUiController()
+        .setSystemBarsColor(color = colors.primaryVariant)
 
     MaterialTheme(
         colors = colors,

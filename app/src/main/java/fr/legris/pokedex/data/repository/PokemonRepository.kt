@@ -9,4 +9,6 @@ interface PokemonRepository {
 
     @ExperimentalPagingApi
     fun getPokemonList(): Flow<PagingData<Pokemon>>
+
+    fun getPokemonById(id : Long) : Flow<Pokemon>
 }

@@ -98,5 +98,6 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 
-
+    // Theme
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 }

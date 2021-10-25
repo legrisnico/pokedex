@@ -7,13 +7,16 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import dagger.hilt.android.AndroidEntryPoint
-import fr.legris.pokedex.ui.pokemondetail.PokeDetailViewModel
-import fr.legris.pokedex.ui.pokemonlist.PokeListViewModel
-import fr.legris.pokedex.ui.pokemonlist.PokemonList
+import fr.legris.pokedex.ui.pokemondetail.PokemonDetailView
+import fr.legris.pokedex.ui.pokemondetail.PokemonDetailViewModel
+import fr.legris.pokedex.ui.pokemonlist.PokemonListViewModel
+import fr.legris.pokedex.ui.pokemonlist.PokemonListView
 import fr.legris.pokedex.ui.theme.PokedexTheme
 
 @ExperimentalCoilApi
@@ -22,8 +25,8 @@ import fr.legris.pokedex.ui.theme.PokedexTheme
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val pokeListViewModel: PokeListViewModel by viewModels()
-    private val pokeDetailViewModel: PokeDetailViewModel by viewModels()
+    private val pokemonListViewModel: PokemonListViewModel by viewModels()
+    private val pokemonDetailViewModel: PokemonDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +34,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             PokedexTheme {
                 val navController = rememberNavController()
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    PokemonList(pokeListViewModel.pokemonFlow)
+
+                NavHost(navController = navController, startDestination = "pokemonList") {
+                    composable("pokemonList") { PokemonListView(navController, pokemonListViewModel.pokemonFlow) }
+                    composable("pokemonDetail") { PokemonDetailView() }
+
                 }
+
+                // A surface container using the 'background' color from the theme
+//                Surface(color = MaterialTheme.colors.background) {
+//                    PokemonListView()
+//                }
             }
         }
     }
