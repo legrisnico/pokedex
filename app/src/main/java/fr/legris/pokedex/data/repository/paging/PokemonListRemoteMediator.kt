@@ -1,30 +1,28 @@
 package fr.legris.pokedex.data.repository.paging
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import fr.legris.pokedex.BuildConfig
 import fr.legris.pokedex.data.api.PokemonService
-import fr.legris.pokedex.data.bdd.AppDatabase
-import fr.legris.pokedex.data.bdd.dao.PokemonDao
-import fr.legris.pokedex.data.bdd.model.PokemonEntity
-import fr.legris.pokedex.data.mappers.PokemonMapper
+import fr.legris.pokedex.data.api.model.PokemonListDTO
+import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
+import fr.legris.pokedex.data.bdd.model.PokemonFromListEntity
+import fr.legris.pokedex.data.mappers.PokemonListMapper
 import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 
 
 @ExperimentalPagingApi
 class PokemonListRemoteMediator(
-    private val pokemonDao: PokemonDao,
+    private val pokemonFromListDao: PokemonFromListDao,
     private val pokemonService: PokemonService
-) : RemoteMediator<Int, PokemonEntity>() {
+) : RemoteMediator<Int, PokemonFromListEntity>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PokemonEntity>
+        state: PagingState<Int, PokemonFromListEntity>
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {
@@ -43,17 +41,23 @@ class PokemonListRemoteMediator(
 
             val response = pokemonService.listPokemon(loadKey, BuildConfig.POKEMON_PAGE_SIZE)
 
-            if (loadType == LoadType.REFRESH) {
-                pokemonDao.deleteAll()
+            if(!response.isSuccessful){
+                MediatorResult.Error(HttpException(response))
             }
 
-            pokemonDao.insertAll(
-                PokemonMapper().mapFromApiModelList(response.results)
+            val result = response.body() ?: PokemonListDTO(0,null, null, listOf())
+
+            if (loadType == LoadType.REFRESH) {
+                pokemonFromListDao.deleteAll()
+            }
+
+            pokemonFromListDao.insertAll(
+                PokemonListMapper().mapFromApiModelList(result.results)
             )
 
 
             MediatorResult.Success(
-                endOfPaginationReached = response.next == null
+                endOfPaginationReached = result.next == null
             )
         } catch (e: IOException) {
             MediatorResult.Error(e)

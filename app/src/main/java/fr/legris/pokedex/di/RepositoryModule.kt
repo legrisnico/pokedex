@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import fr.legris.pokedex.data.api.PokemonService
 import fr.legris.pokedex.data.bdd.dao.PokemonDao
+import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
 import fr.legris.pokedex.data.repository.PokemonRepository
 import fr.legris.pokedex.data.repository.PokemonRepositoryImpl
 
@@ -15,8 +16,9 @@ object RepositoryModule {
 
     @Provides
     fun providePokemonRepository(
+        pokemonFromListDao: PokemonFromListDao,
         pokemonDao: PokemonDao,
         pokemonService: PokemonService
     ): PokemonRepository =
-        PokemonRepositoryImpl(pokemonDao, pokemonService)
+        PokemonRepositoryImpl(pokemonFromListDao, pokemonDao, pokemonService)
 }

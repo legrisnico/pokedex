@@ -9,26 +9,24 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.paging.PagingData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import fr.legris.pokedex.R
-import fr.legris.pokedex.ui.model.Pokemon
+import fr.legris.pokedex.ui.model.PokemonFromList
 import fr.legris.pokedex.ui.theme.PokedexTheme
-import kotlinx.coroutines.flow.Flow
 
+@ExperimentalPagingApi
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun PokemonListView(navController: NavController, pokemonFlow: Flow<PagingData<Pokemon>>) {
-    val lazyPokemonItems: LazyPagingItems<Pokemon> = pokemonFlow.collectAsLazyPagingItems()
+fun PokemonListView(navController: NavController, viewModel: PokemonListViewModel) {
+    val lazyPokemonItems: LazyPagingItems<PokemonFromList> = viewModel.pokemonFlow.collectAsLazyPagingItems()
     LazyVerticalGrid(
         cells = GridCells.Adaptive(128.dp)
     ) {
@@ -43,14 +41,14 @@ fun PokemonListView(navController: NavController, pokemonFlow: Flow<PagingData<P
 
 @ExperimentalCoilApi
 @Composable
-fun Pokemon(navController: NavController, pokemon: Pokemon) {
+fun Pokemon(navController: NavController, pokemon: PokemonFromList) {
     PokedexTheme {
         Column(
             modifier = Modifier
                 .height(128.dp)
                 .padding(4.dp)
                 .clickable(
-                    onClick = { navController.navigate("pokemonDetail") }
+                    onClick = { navController.navigate("pokemonDetail/${pokemon.id}") }
                 ),
             verticalArrangement = Arrangement.Bottom
         ) {

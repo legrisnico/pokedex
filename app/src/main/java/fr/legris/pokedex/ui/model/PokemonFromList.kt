@@ -1,6 +1,7 @@
 package fr.legris.pokedex.ui.model
 
-data class Pokemon(
+data class PokemonFromList(
     val id: Int,
     val name: String,
+    val mainPictureUrl: String
 ) : ModelUi
