@@ -23,12 +23,12 @@ class PokemonListMapper: DbEntityMapper<PokemonFromListEntity, PokemonFromListDT
         }
     }
 
-    override fun mapFromDbEntityToModelUi(dbEntity: PokemonFromListEntity): PokemonFromList {
-        val name = dbEntity.name.capitalize(Locale.current)
+    override fun mapFromDbEntityToModelUi(dbEntity: PokemonFromListEntity?): PokemonFromList {
+        val name = dbEntity?.name?.capitalize(Locale.current)
         return PokemonFromList(
-            dbEntity.id,
-            name,
-            dbEntity.mainPictureUrl
+            dbEntity?.id ?: 0,
+            name ?: "",
+            dbEntity?.mainPictureUrl ?: ""
         )
     }
 }

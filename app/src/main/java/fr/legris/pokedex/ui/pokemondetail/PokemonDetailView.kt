@@ -7,26 +7,58 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.utils.Resource
 
 @Composable
-fun PokemonDetailView(viewModel: PokemonDetailViewModel, pokemonId : Int){
+fun PokemonDetailView(
+    viewModel: PokemonDetailViewModel,
+    pokemonId: Int
+) {
     val scrollState = rememberScrollState()
-    val pokemon = viewModel.pokemon.observeAsState(initial = Resource.loading())
-    viewModel.getPokemonById(pokemonId = pokemonId)
+    val pokemon by viewModel.pokemon.observeAsState()
 
-    Column (
-        modifier = Modifier.verticalScroll(scrollState)
-            .padding(8.dp)
-            .fillMaxHeight()
-            .fillMaxWidth()
+    when(pokemon?.status){
+         Resource.Status.LOADING -> {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
             )
-    {
-        Text(text = "Détail $pokemonId")
+            {
+                Text(text = "Détail LOADING $pokemonId")
+            }
+        }
+        Resource.Status.SUCCESS -> {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+            )
+            {
+                Text(text = "Détail SUCCESS $pokemonId")
+            }
+        }
+        Resource.Status.ERROR -> {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+            )
+            {
+                Text(text = "Détail ERROR $pokemonId")
+            }
+        }
     }
 
 }

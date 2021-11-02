@@ -3,14 +3,21 @@ package fr.legris.pokedex.utils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
+import fr.legris.pokedex.data.mappers.DbEntityMapper
 import kotlinx.coroutines.Dispatchers
 
-fun <T, A> performGetOperation(databaseQuery: () -> LiveData<T>,
-                               networkCall: suspend () -> Resource<A>,
-                               saveCallResult: suspend (A) -> Unit): LiveData<Resource<T>> =
+fun <T, A, M> performGetOperation(
+    databaseQuery: () -> LiveData<T>,
+    networkCall: suspend () -> Resource<A>,
+    saveCallResult: suspend (A) -> Unit,
+    mapper: DbEntityMapper<T, A, M>
+): LiveData<Resource<M>> =
+
     liveData(Dispatchers.IO) {
         emit(Resource.loading())
-        val source = databaseQuery.invoke().map { Resource.success(it) }
+        val source = databaseQuery.invoke().map {
+            Resource.success(mapper.mapFromDbEntityToModelUi(it))
+        }
         emitSource(source)
 
         val responseStatus = networkCall.invoke()

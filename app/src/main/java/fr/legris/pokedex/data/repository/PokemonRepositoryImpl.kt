@@ -1,19 +1,24 @@
 package fr.legris.pokedex.data.repository
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.*
 import fr.legris.pokedex.BuildConfig
 import fr.legris.pokedex.data.api.PokemonService
+import fr.legris.pokedex.data.api.model.PokemonDTO
 import fr.legris.pokedex.data.bdd.dao.PokemonDao
 import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
 import fr.legris.pokedex.data.mappers.PokemonListMapper
 import fr.legris.pokedex.data.mappers.PokemonMapper
 import fr.legris.pokedex.data.repository.paging.PokemonListRemoteMediator
+import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.ui.model.PokemonFromList
 import fr.legris.pokedex.utils.Resource
 import fr.legris.pokedex.utils.performGetOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -35,13 +40,15 @@ class PokemonRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getPokemonById(id: Int) = performGetOperation(
-        databaseQuery = { Transformations.map(pokemonDao.findById(id)) {PokemonMapper().mapFromDbEntityToModelUi(it)} },
+    override fun getPokemonById(id: Int): LiveData<Resource<Pokemon>> {
+        return performGetOperation(
+        databaseQuery = { pokemonDao.findById(id) },
         networkCall = { getResult { pokemonService.getPokemonById(id) } },
-        saveCallResult = { pokemonDao.insertAll(listOf(PokemonMapper().mapFromApiModel(it))) }
-    )
+        saveCallResult = { pokemonDao.insertAll(listOf(PokemonMapper().mapFromApiModel(it))) },
+        mapper = PokemonMapper()
+    )}
 
-    protected suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
+    private suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
         try {
             val response = call()
             if (response.isSuccessful) {
@@ -52,9 +59,5 @@ class PokemonRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             return error(e.message ?: e.toString())
         }
-    }
-
-    private fun <T> error(message: String): Resource<T> {
-        return Resource.error("Network call has failed for a following reason: $message")
     }
 }
