@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -17,8 +17,8 @@ import coil.annotation.ExperimentalCoilApi
 import dagger.hilt.android.AndroidEntryPoint
 import fr.legris.pokedex.ui.pokemondetail.PokemonDetailView
 import fr.legris.pokedex.ui.pokemondetail.PokemonDetailViewModel
-import fr.legris.pokedex.ui.pokemonlist.PokemonListViewModel
 import fr.legris.pokedex.ui.pokemonlist.PokemonListView
+import fr.legris.pokedex.ui.pokemonlist.PokemonListViewModel
 import fr.legris.pokedex.ui.theme.PokedexTheme
 import fr.legris.pokedex.utils.Constants.ARG_POKEMON_ID
 
@@ -28,8 +28,8 @@ import fr.legris.pokedex.utils.Constants.ARG_POKEMON_ID
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val pokemonListViewModel: PokemonListViewModel by viewModels()
-    private val pokemonDetailViewModel: PokemonDetailViewModel by viewModels()
+    //private val pokemonListViewModel: PokemonListViewModel by viewModels()
+    //private val pokemonDetailViewModel: PokemonDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,22 +39,24 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 Surface {
-                    NavHost(navController = navController, startDestination = "pokemonList") {
-                        composable("pokemonList") { PokemonListView(navController, pokemonListViewModel) }
+                    NavHost(navController = navController, startDestination = NAV_POKEMON_LIST) {
+                        composable(NAV_POKEMON_LIST) { PokemonListView(navController) }
                         composable(
-                            "pokemonDetail/{$ARG_POKEMON_ID}",
+                            "$NAV_POKEMON_DETAIL/{$ARG_POKEMON_ID}",
                             listOf(navArgument(ARG_POKEMON_ID) { type = NavType.IntType })
-                        ) { backStackEntry ->
-                            PokemonDetailView(
-                                pokemonDetailViewModel,
-                                backStackEntry.arguments?.getInt(ARG_POKEMON_ID) ?: 0
-                            )
+                        ) {
+                            PokemonDetailView()
                         }
 
                     }
                 }
             }
         }
+    }
+
+    companion object{
+        const val NAV_POKEMON_LIST = "pokemonList"
+        const val NAV_POKEMON_DETAIL = "pokemonDetail"
     }
 }
 

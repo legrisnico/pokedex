@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.LazyPagingItems
@@ -18,6 +19,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import fr.legris.pokedex.R
+import fr.legris.pokedex.ui.main.MainActivity
 import fr.legris.pokedex.ui.model.PokemonFromList
 import fr.legris.pokedex.ui.theme.PokedexTheme
 
@@ -25,10 +27,16 @@ import fr.legris.pokedex.ui.theme.PokedexTheme
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @Composable
-fun PokemonListView(navController: NavController, viewModel: PokemonListViewModel) {
-    val lazyPokemonItems: LazyPagingItems<PokemonFromList> = viewModel.pokemonFlow.collectAsLazyPagingItems()
+fun PokemonListView(
+    navController: NavController,
+    viewModel: PokemonListViewModel = hiltViewModel()
+) {
+
+    val lazyPokemonItems: LazyPagingItems<PokemonFromList> =
+        viewModel.pokemonFlow.collectAsLazyPagingItems()
+
     LazyVerticalGrid(
-        cells = GridCells.Adaptive(128.dp)
+        cells = GridCells.Adaptive(112.dp)
     ) {
         items(lazyPokemonItems.itemCount) { index ->
             lazyPokemonItems[index]?.let {
@@ -39,6 +47,8 @@ fun PokemonListView(navController: NavController, viewModel: PokemonListViewMode
 
 }
 
+@ExperimentalFoundationApi
+@ExperimentalPagingApi
 @ExperimentalCoilApi
 @Composable
 fun Pokemon(navController: NavController, pokemon: PokemonFromList) {
@@ -48,7 +58,11 @@ fun Pokemon(navController: NavController, pokemon: PokemonFromList) {
                 .height(128.dp)
                 .padding(4.dp)
                 .clickable(
-                    onClick = { navController.navigate("pokemonDetail/${pokemon.id}") }
+                    onClick = {
+                        navController.navigate(
+                            "${MainActivity.NAV_POKEMON_DETAIL}/${pokemon.id}"
+                        )
+                    }
                 ),
             verticalArrangement = Arrangement.Bottom
         ) {

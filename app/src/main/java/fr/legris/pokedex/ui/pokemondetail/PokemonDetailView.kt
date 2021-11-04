@@ -11,19 +11,24 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.utils.Resource
 
 @Composable
 fun PokemonDetailView(
-    viewModel: PokemonDetailViewModel,
-    pokemonId: Int
+    viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    val scrollState = rememberScrollState()
     val pokemon by viewModel.pokemon.observeAsState()
 
+    PokemonDetail(pokemon = pokemon)
+}
+
+@Composable
+fun PokemonDetail(pokemon : Resource<Pokemon>?){
+    val scrollState = rememberScrollState()
     when(pokemon?.status){
-         Resource.Status.LOADING -> {
+        Resource.Status.LOADING -> {
             Column(
                 modifier = Modifier
                     .verticalScroll(scrollState)
@@ -32,7 +37,7 @@ fun PokemonDetailView(
                     .fillMaxWidth()
             )
             {
-                Text(text = "Détail LOADING $pokemonId")
+                Text(text = "Détail LOADING")
             }
         }
         Resource.Status.SUCCESS -> {
@@ -44,7 +49,7 @@ fun PokemonDetailView(
                     .fillMaxWidth()
             )
             {
-                Text(text = "Détail SUCCESS $pokemonId")
+                Text(text = "Détail SUCCESS ${pokemon.data?.name}")
             }
         }
         Resource.Status.ERROR -> {
@@ -56,9 +61,8 @@ fun PokemonDetailView(
                     .fillMaxWidth()
             )
             {
-                Text(text = "Détail ERROR $pokemonId")
+                Text(text = "Détail ERROR ${pokemon.message}")
             }
         }
     }
-
 }
