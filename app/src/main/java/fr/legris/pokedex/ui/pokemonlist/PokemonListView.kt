@@ -18,6 +18,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import coil.request.CachePolicy
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.main.MainActivity
 import fr.legris.pokedex.ui.model.PokemonFromList
@@ -72,6 +73,8 @@ fun Pokemon(navController: NavController, pokemon: PokemonFromList) {
                     builder = {
                         crossfade(true)
                         placeholder(R.drawable.ic_pokemon_placeholder)
+                        error(R.drawable.ic_pokemon_placeholder)
+                        diskCachePolicy(CachePolicy.ENABLED)
                     }
                 ),
                 contentDescription = "Image de ${pokemon.name}",

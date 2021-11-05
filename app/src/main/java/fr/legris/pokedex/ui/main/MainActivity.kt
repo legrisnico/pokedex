@@ -28,9 +28,6 @@ import fr.legris.pokedex.utils.Constants.ARG_POKEMON_ID
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    //private val pokemonListViewModel: PokemonListViewModel by viewModels()
-    //private val pokemonDetailViewModel: PokemonDetailViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

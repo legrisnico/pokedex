@@ -16,17 +16,13 @@ class PokemonDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private var _pokemon = savedStateHandle.getLiveData<Int>(Constants.ARG_POKEMON_ID).switchMap { pokemonId ->
-        pokemonRepository.getPokemonById(pokemonId)
-    }
+    private var _pokemon =
+        savedStateHandle.getLiveData<Int>(Constants.ARG_POKEMON_ID).switchMap { pokemonId ->
+            pokemonRepository.getPokemonById(pokemonId)
+        }
 
     val pokemon: LiveData<Resource<Pokemon>>
         get() {
             return _pokemon
         }
-
-    init {
-        val id: Int? = savedStateHandle.get(Constants.ARG_POKEMON_ID)
-        Log.d("ID POKE",""+id)
-    }
 }
