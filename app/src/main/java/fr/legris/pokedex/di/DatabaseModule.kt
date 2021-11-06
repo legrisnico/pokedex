@@ -15,10 +15,10 @@ import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
 object DatabaseModule {
 
     @Provides
-    fun provideAppDataBase(@ApplicationContext context : Context): AppDatabase = AppDatabase.getDatabase(context)
+    fun provideAppDataBase(@ApplicationContext context: Context): AppDatabase = AppDatabase.getDatabase(context)
 
     @Provides
-    fun providePokemonFromListDao(db : AppDatabase): PokemonFromListDao = db.pokemonFromListDao()
+    fun providePokemonFromListDao(db: AppDatabase): PokemonFromListDao = db.pokemonFromListDao()
 
     @Provides
     fun providePokemonDao(db: AppDatabase): PokemonDao = db.pokemonDao()

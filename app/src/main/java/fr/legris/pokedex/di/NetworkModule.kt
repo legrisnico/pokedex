@@ -16,25 +16,23 @@ object NetworkModule {
 
     @Provides
     fun provideOkHttp(): OkHttpClient =
-            OkHttpClient.Builder()
-                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                    .build()
+        OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
 
     @Provides
     fun provideRetrofit(
-            okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient
     ): Retrofit =
-            Retrofit.Builder()
-                    .baseUrl("https://pokeapi.co/api/v2/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(okHttpClient)
-                    .build()
+        Retrofit.Builder()
+            .baseUrl("https://pokeapi.co/api/v2/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
 
     @Provides
     fun providePokemonService(
-        retrofit : Retrofit
+        retrofit: Retrofit
     ): PokemonService =
-            retrofit.create(PokemonService::class.java)
-
-
+        retrofit.create(PokemonService::class.java)
 }

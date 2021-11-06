@@ -10,4 +10,4 @@ data class PokemonEntity(
     val id: Int,
     @ColumnInfo(name = "name")
     val name: String,
-): DbEntity
+) : DbEntity

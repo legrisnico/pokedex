@@ -3,13 +3,12 @@ package fr.legris.pokedex.data.bdd.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonDao {
 
     @Query("SELECT * FROM pokemonEntity WHERE id LIKE :id LIMIT 1")
-    fun findById(id : Int): LiveData<PokemonEntity>
+    fun findById(id: Int): LiveData<PokemonEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonList: List<PokemonEntity>)
@@ -20,4 +19,3 @@ interface PokemonDao {
     @Query("DELETE FROM pokemonEntity")
     suspend fun deleteAll()
 }
-

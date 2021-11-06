@@ -3,10 +3,8 @@ package fr.legris.pokedex.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.Surface
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,9 +14,7 @@ import androidx.paging.ExperimentalPagingApi
 import coil.annotation.ExperimentalCoilApi
 import dagger.hilt.android.AndroidEntryPoint
 import fr.legris.pokedex.ui.pokemondetail.PokemonDetailView
-import fr.legris.pokedex.ui.pokemondetail.PokemonDetailViewModel
 import fr.legris.pokedex.ui.pokemonlist.PokemonListView
-import fr.legris.pokedex.ui.pokemonlist.PokemonListViewModel
 import fr.legris.pokedex.ui.theme.PokedexTheme
 import fr.legris.pokedex.utils.Constants.ARG_POKEMON_ID
 
@@ -44,16 +40,14 @@ class MainActivity : ComponentActivity() {
                         ) {
                             PokemonDetailView()
                         }
-
                     }
                 }
             }
         }
     }
 
-    companion object{
+    companion object {
         const val NAV_POKEMON_LIST = "pokemonList"
         const val NAV_POKEMON_DETAIL = "pokemonDetail"
     }
 }
-

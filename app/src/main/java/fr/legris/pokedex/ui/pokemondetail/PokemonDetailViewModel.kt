@@ -1,6 +1,5 @@
 package fr.legris.pokedex.ui.pokemondetail
 
-import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.legris.pokedex.data.repository.PokemonRepository
@@ -14,7 +13,6 @@ class PokemonDetailViewModel @Inject constructor(
     private val pokemonRepository: PokemonRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
 
     private var _pokemon =
         savedStateHandle.getLiveData<Int>(Constants.ARG_POKEMON_ID).switchMap { pokemonId ->

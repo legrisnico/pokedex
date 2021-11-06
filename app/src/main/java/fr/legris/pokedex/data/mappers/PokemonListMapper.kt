@@ -6,18 +6,18 @@ import fr.legris.pokedex.data.api.model.PokemonFromListDTO
 import fr.legris.pokedex.data.bdd.model.PokemonFromListEntity
 import fr.legris.pokedex.ui.model.PokemonFromList
 
-class PokemonListMapper: DbEntityMapper<PokemonFromListEntity, PokemonFromListDTO, PokemonFromList> {
+class PokemonListMapper : DbEntityMapper<PokemonFromListEntity, PokemonFromListDTO, PokemonFromList> {
 
     override fun mapFromApiModel(apiModel: PokemonFromListDTO): PokemonFromListEntity {
         val id = apiModel.url.split("/")[apiModel.url.split("/").size - 2].toInt()
         return PokemonFromListEntity(
             id,
             apiModel.name,
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
         )
     }
 
-    override fun mapFromApiModelList(apiModelList: List<PokemonFromListDTO>): List<PokemonFromListEntity>  {
+    override fun mapFromApiModelList(apiModelList: List<PokemonFromListDTO>): List<PokemonFromListEntity> {
         return apiModelList.map { pokemon ->
             mapFromApiModel(pokemon)
         }

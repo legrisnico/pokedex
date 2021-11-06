@@ -1,12 +1,9 @@
 package fr.legris.pokedex.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.paging.*
 import fr.legris.pokedex.BuildConfig
 import fr.legris.pokedex.data.api.PokemonService
-import fr.legris.pokedex.data.api.model.PokemonDTO
 import fr.legris.pokedex.data.bdd.dao.PokemonDao
 import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
 import fr.legris.pokedex.data.mappers.PokemonListMapper
@@ -18,7 +15,6 @@ import fr.legris.pokedex.utils.Resource
 import fr.legris.pokedex.utils.performGetOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -42,11 +38,12 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonById(id: Int): LiveData<Resource<Pokemon>> {
         return performGetOperation(
-        databaseQuery = { pokemonDao.findById(id) },
-        networkCall = { getResult { pokemonService.getPokemonById(id) } },
-        saveCallResult = { pokemonDao.insertAll(listOf(PokemonMapper().mapFromApiModel(it))) },
-        mapper = PokemonMapper()
-    )}
+            databaseQuery = { pokemonDao.findById(id) },
+            networkCall = { getResult { pokemonService.getPokemonById(id) } },
+            saveCallResult = { pokemonDao.insertAll(listOf(PokemonMapper().mapFromApiModel(it))) },
+            mapper = PokemonMapper()
+        )
+    }
 
     private suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
         try {
