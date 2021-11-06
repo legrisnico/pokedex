@@ -23,9 +23,8 @@ data class Resource<out T>(val status: Status, val data: T?, val message: String
     }
 }
 
-//sealed class Resource<out T> {
+// sealed class Resource<out T> {
 //    data class Success<out T>(val data: T): Resource<T>()
 //    data class Error(val exception: Throwable): Resource<Nothing>()
 //    object Loading: Resource<Nothing>()
-//}
-
+// }

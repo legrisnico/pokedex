@@ -2,8 +2,8 @@ package fr.legris.pokedex.data.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class VersionDetails (
+data class VersionDetails(
 
-	@SerializedName("rarity") val rarity : Int,
-	@SerializedName("version") val versionDTO : VersionDTO
+    @SerializedName("rarity") val rarity: Int,
+    @SerializedName("version") val versionDTO: VersionDTO
 )

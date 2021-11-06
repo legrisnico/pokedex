@@ -25,9 +25,9 @@ fun PokemonDetailView(
 }
 
 @Composable
-fun PokemonDetail(pokemon : Resource<Pokemon>?){
+fun PokemonDetail(pokemon: Resource<Pokemon>?) {
     val scrollState = rememberScrollState()
-    when(pokemon?.status){
+    when (pokemon?.status) {
         Resource.Status.LOADING -> {
             Column(
                 modifier = Modifier
@@ -35,8 +35,7 @@ fun PokemonDetail(pokemon : Resource<Pokemon>?){
                     .padding(8.dp)
                     .fillMaxHeight()
                     .fillMaxWidth()
-            )
-            {
+            ) {
                 Text(text = "Détail LOADING")
             }
         }
@@ -47,8 +46,7 @@ fun PokemonDetail(pokemon : Resource<Pokemon>?){
                     .padding(8.dp)
                     .fillMaxHeight()
                     .fillMaxWidth()
-            )
-            {
+            ) {
                 Text(text = "Détail SUCCESS ${pokemon.data?.name}")
             }
         }
@@ -59,8 +57,7 @@ fun PokemonDetail(pokemon : Resource<Pokemon>?){
                     .padding(8.dp)
                     .fillMaxHeight()
                     .fillMaxWidth()
-            )
-            {
+            ) {
                 Text(text = "Détail ERROR ${pokemon.message}")
             }
         }

@@ -12,7 +12,7 @@ interface PokemonFromListDao {
     fun pagingSource(): PagingSource<Int, PokemonFromListEntity>
 
     @Query("SELECT * FROM pokemonFromListEntity WHERE id LIKE :id LIMIT 1")
-    fun findById(id : Int): LiveData<PokemonFromListEntity>
+    fun findById(id: Int): LiveData<PokemonFromListEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(pokemonList: List<PokemonFromListEntity>)
@@ -23,4 +23,3 @@ interface PokemonFromListDao {
     @Query("DELETE FROM pokemonFromListEntity")
     suspend fun deleteAll()
 }
-

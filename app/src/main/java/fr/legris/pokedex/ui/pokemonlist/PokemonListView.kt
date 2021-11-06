@@ -45,7 +45,6 @@ fun PokemonListView(
             }
         }
     }
-
 }
 
 @ExperimentalFoundationApi
@@ -87,8 +86,7 @@ fun Pokemon(navController: NavController, pokemon: PokemonFromList) {
                 textAlign = TextAlign.Center,
                 text = pokemon.name,
 
-                )
+            )
         }
-
     }
 }

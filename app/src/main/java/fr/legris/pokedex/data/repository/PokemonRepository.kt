@@ -13,5 +13,5 @@ interface PokemonRepository {
     @ExperimentalPagingApi
     fun getPokemonList(): Flow<PagingData<PokemonFromList>>
 
-    fun getPokemonById(id : Int) : LiveData<Resource<Pokemon>>
+    fun getPokemonById(id: Int): LiveData<Resource<Pokemon>>
 }

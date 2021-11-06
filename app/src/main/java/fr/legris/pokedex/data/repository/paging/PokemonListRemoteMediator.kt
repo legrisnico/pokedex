@@ -13,7 +13,6 @@ import fr.legris.pokedex.data.mappers.PokemonListMapper
 import retrofit2.HttpException
 import java.io.IOException
 
-
 @ExperimentalPagingApi
 class PokemonListRemoteMediator(
     private val pokemonFromListDao: PokemonFromListDao,
@@ -41,11 +40,11 @@ class PokemonListRemoteMediator(
 
             val response = pokemonService.listPokemon(loadKey, BuildConfig.POKEMON_PAGE_SIZE)
 
-            if(!response.isSuccessful){
+            if (!response.isSuccessful) {
                 MediatorResult.Error(HttpException(response))
             }
 
-            val result = response.body() ?: PokemonListDTO(0,null, null, listOf())
+            val result = response.body() ?: PokemonListDTO(0, null, null, listOf())
 
             if (loadType == LoadType.REFRESH) {
                 pokemonFromListDao.deleteAll()
@@ -54,7 +53,6 @@ class PokemonListRemoteMediator(
             pokemonFromListDao.insertAll(
                 PokemonListMapper().mapFromApiModelList(result.results)
             )
-
 
             MediatorResult.Success(
                 endOfPaginationReached = result.next == null
@@ -65,7 +63,4 @@ class PokemonListRemoteMediator(
             MediatorResult.Error(e)
         }
     }
-
-
-
 }
