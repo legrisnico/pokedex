@@ -16,7 +16,11 @@ fun <T, A, M> performGetOperation(
     liveData(Dispatchers.IO) {
         emit(Resource.loading())
         val source = databaseQuery.invoke().map {
-            Resource.success(mapper.mapFromDbEntityToModelUi(it))
+            if(it == null){
+                Resource.loading()
+            }else{
+                Resource.success(mapper.mapFromDbEntityToModelUi(it))
+            }
         }
         emitSource(source)
 

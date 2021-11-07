@@ -19,10 +19,10 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
         }
     }
 
-    override fun mapFromDbEntityToModelUi(dbEntity: PokemonEntity?): Pokemon {
+    override fun mapFromDbEntityToModelUi(dbEntity: PokemonEntity): Pokemon {
         return Pokemon(
-            dbEntity?.id ?: 0,
-            dbEntity?.name ?: ""
+            dbEntity.id,
+            dbEntity.name
         )
     }
 }
