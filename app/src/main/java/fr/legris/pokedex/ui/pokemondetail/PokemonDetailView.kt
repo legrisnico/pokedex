@@ -58,7 +58,7 @@ fun LoadingScreen() {
     Pulsating {
         Image(
             alignment = Alignment.Center,
-            painter = painterResource(id = R.drawable.ic_loader_pokemon_dark),
+            painter = painterResource(id = R.drawable.ic_pokeball_loading),
             contentDescription = "Chargement",
             modifier = Modifier
                 .fillMaxWidth()
