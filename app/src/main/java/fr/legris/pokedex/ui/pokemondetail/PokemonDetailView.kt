@@ -62,7 +62,11 @@ fun LoadingScreen() {
         initialValue = 1f,
         targetValue = 1.2f,
         animationSpec = infiniteRepeatable(
-            animation = tween(500),
+            animation = tween(
+                durationMillis = 500,
+                easing = FastOutSlowInEasing,
+                delayMillis = 100
+            ),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -71,21 +75,33 @@ fun LoadingScreen() {
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1000),
+            animation = tween(
+                durationMillis = 1000,
+                easing = FastOutSlowInEasing,
+                delayMillis = 200
+            ),
             repeatMode = RepeatMode.Restart,
         )
     )
 
-    Image(
-        alignment = Alignment.Center,
-        painter = painterResource(id = R.drawable.ic_loader_pokemon_dark),
-        contentDescription = "Chargement",
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight()
-            .scale(scale)
-            .rotate(rotate),
-        contentScale = ContentScale.Inside
+            .fillMaxHeight(),
+        contentAlignment = Alignment.Center
     )
+    {
+        Image(
+            painter = painterResource(id = R.drawable.ic_pokeball_loading),
+            contentDescription = "Chargement",
+            modifier = Modifier
+                .fillMaxWidth(0.50f)
+                .fillMaxHeight()
+                .scale(scale)
+                .rotate(rotate),
+            contentScale = ContentScale.Inside
+        )
+    }
+
 }
 
