@@ -2,14 +2,14 @@ package fr.legris.pokedex.data.mappers
 
 import fr.legris.pokedex.data.api.model.PokemonDTO
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
-import fr.legris.pokedex.data.bdd.model.PokemonFromListEntity
 import fr.legris.pokedex.ui.model.Pokemon
 
 class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
     override fun mapFromApiModel(apiModel: PokemonDTO): PokemonEntity {
         return PokemonEntity(
             apiModel.id,
-            apiModel.name
+            apiModel.name,
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${apiModel.id}.png"
         )
     }
 

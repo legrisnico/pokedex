@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import fr.legris.pokedex.data.bdd.dao.PokemonDao
 import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
-import fr.legris.pokedex.data.bdd.model.PokemonFromListEntity
 
-@Database(entities = [PokemonFromListEntity::class, PokemonEntity::class], version = 1)
+@Database(entities = [PokemonEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun pokemonFromListDao(): PokemonFromListDao
     abstract fun pokemonDao(): PokemonDao

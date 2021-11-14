@@ -1,17 +1,20 @@
 package fr.legris.pokedex.ui.pokemondetail
 
+import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -20,35 +23,38 @@ import coil.annotation.ExperimentalCoilApi
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.utils.Resource
+import kotlinx.coroutines.launch
 
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailView(
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    val pokemon: Resource<Pokemon>? by viewModel.pokemon.observeAsState()
+    val pokemon: Resource<Pokemon?>? by viewModel.pokemon.observeAsState()
 
     val scrollState = rememberScrollState()
+    val scaffoldState = rememberScaffoldState()
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(8.dp)
-            .fillMaxHeight()
-            .fillMaxWidth()
+    Scaffold(
+        scaffoldState = scaffoldState,
     )
     {
+        when (pokemon?.status) {
+            Resource.Status.LOADING -> {
+                LoadingScreen()
+            }
+            Resource.Status.SUCCESS -> {
+                Log.d("RESOURCE SUCCESS", "RESOURCED" + pokemon?.data?.name ?: "No name")
+                LoadingScreen()
+            }
+            Resource.Status.ERROR -> {
+                Log.d("RESOURCE ERROR", "RESOURCED" + pokemon?.message ?: "Une erreur est survenue")
+                ErrorSnackBar(
+                    scaffoldState = scaffoldState,
+                    message = pokemon?.message ?: "Une erreur est survenue"
+                )
+            }
 
-    }
-    when (pokemon?.status) {
-        Resource.Status.LOADING -> {
-            LoadingScreen()
-        }
-        Resource.Status.SUCCESS -> {
-            LoadingScreen()
-        }
-        Resource.Status.ERROR -> {
-            LoadingScreen()
         }
     }
 }
@@ -102,6 +108,17 @@ fun LoadingScreen() {
             contentScale = ContentScale.Inside
         )
     }
+}
 
+@Composable
+fun ErrorSnackBar(scaffoldState: ScaffoldState, message: String) {
+    LaunchedEffect(scaffoldState.snackbarHostState) {
+        scaffoldState.snackbarHostState.showSnackbar(message).let {
+            when (it) {
+                SnackbarResult.Dismissed -> Log.d("TAG", "ScaffoldSnackbar: dismissed")
+                SnackbarResult.ActionPerformed -> TODO()
+            }
+        }
+    }
 }
 

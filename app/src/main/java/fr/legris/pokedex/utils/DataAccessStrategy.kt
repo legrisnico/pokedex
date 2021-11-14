@@ -16,20 +16,16 @@ fun <T, A, M> performGetOperation(
     liveData(Dispatchers.IO) {
         emit(Resource.loading())
         val source = databaseQuery.invoke().map {
-            if(it == null){
-                Resource.loading()
-            }else{
-                Resource.success(mapper.mapFromDbEntityToModelUi(it))
-            }
+            Resource.success(mapper.mapFromDbEntityToModelUi(it))
         }
         emitSource(source)
 
-        val responseStatus = networkCall.invoke()
-        if (responseStatus.status == Resource.Status.SUCCESS) {
-            saveCallResult(responseStatus.data!!)
-
-        } else if (responseStatus.status == Resource.Status.ERROR) {
-            emit(Resource.error(responseStatus.message!!))
-            emitSource(source)
+        if (source.value?.status != Resource.Status.SUCCESS) {
+            val responseStatus = networkCall.invoke()
+            if (responseStatus.status == Resource.Status.SUCCESS) {
+                saveCallResult(responseStatus.data!!)
+            } else if (responseStatus.status == Resource.Status.ERROR) {
+                emit(Resource.error(responseStatus.message!!))
+            }
         }
     }

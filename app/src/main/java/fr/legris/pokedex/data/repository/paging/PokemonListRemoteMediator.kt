@@ -8,7 +8,7 @@ import fr.legris.pokedex.BuildConfig
 import fr.legris.pokedex.data.api.PokemonService
 import fr.legris.pokedex.data.api.model.PokemonListDTO
 import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
-import fr.legris.pokedex.data.bdd.model.PokemonFromListEntity
+import fr.legris.pokedex.data.bdd.model.PokemonEntity
 import fr.legris.pokedex.data.mappers.PokemonListMapper
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,11 +18,11 @@ import java.io.IOException
 class PokemonListRemoteMediator(
     private val pokemonFromListDao: PokemonFromListDao,
     private val pokemonService: PokemonService
-) : RemoteMediator<Int, PokemonFromListEntity>() {
+) : RemoteMediator<Int, PokemonEntity>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PokemonFromListEntity>
+        state: PagingState<Int, PokemonEntity>
     ): MediatorResult {
         return try {
             val loadKey = when (loadType) {

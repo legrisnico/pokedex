@@ -44,7 +44,7 @@ class PokemonRepositoryImpl @Inject constructor(
         return performGetOperation(
         databaseQuery = { pokemonDao.findById(id) },
         networkCall = { getResult { pokemonService.getPokemonById(id) } },
-        saveCallResult = { pokemonDao.insertAll(listOf(PokemonMapper().mapFromApiModel(it))) },
+        saveCallResult = { pokemonDao.insert(PokemonMapper().mapFromApiModel(it)) },
         mapper = PokemonMapper()
     )}
 

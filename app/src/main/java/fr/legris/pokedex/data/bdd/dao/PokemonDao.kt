@@ -7,11 +7,11 @@ import fr.legris.pokedex.data.bdd.model.PokemonEntity
 @Dao
 interface PokemonDao {
 
-    @Query("SELECT * FROM pokemonEntity WHERE id LIKE :id LIMIT 1")
+    @Query("SELECT * FROM pokemonEntity WHERE id LIKE :id")
     fun findById(id : Int): LiveData<PokemonEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(pokemonList: List<PokemonEntity>)
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(pokemon: PokemonEntity)
 
     @Delete
     suspend fun delete(pokemon: PokemonEntity)
