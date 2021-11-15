@@ -1,14 +1,18 @@
 package fr.legris.pokedex.ui.pokemondetail
 
-import android.util.Log
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,13 +21,18 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import coil.request.CachePolicy
+import coil.transform.CircleCropTransformation
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
 import fr.legris.pokedex.utils.Resource
-import kotlinx.coroutines.launch
 
 @ExperimentalCoilApi
 @Composable
@@ -32,7 +41,6 @@ fun PokemonDetailView(
 ) {
     val pokemon: Resource<Pokemon?>? by viewModel.pokemon.observeAsState()
 
-    val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -41,17 +49,21 @@ fun PokemonDetailView(
     {
         when (pokemon?.status) {
             Resource.Status.LOADING -> {
-                LoadingScreen()
+
             }
             Resource.Status.SUCCESS -> {
-                Log.d("RESOURCE SUCCESS", "RESOURCED" + pokemon?.data?.name ?: "No name")
-                LoadingScreen()
+                if(pokemon?.data == null){
+                    ErrorSnackBar(
+                        scaffoldState = scaffoldState,
+                        message = pokemon?.message ?: stringResource(R.string.error_pokemon_detail_default)
+                    )
+                }
+                PokemonDetail(pokemon = pokemon?.data!!)
             }
             Resource.Status.ERROR -> {
-                Log.d("RESOURCE ERROR", "RESOURCED" + pokemon?.message ?: "Une erreur est survenue")
                 ErrorSnackBar(
                     scaffoldState = scaffoldState,
-                    message = pokemon?.message ?: "Une erreur est survenue"
+                    message = pokemon?.message ?: stringResource(R.string.error_pokemon_detail_default)
                 )
             }
 
@@ -113,12 +125,69 @@ fun LoadingScreen() {
 @Composable
 fun ErrorSnackBar(scaffoldState: ScaffoldState, message: String) {
     LaunchedEffect(scaffoldState.snackbarHostState) {
-        scaffoldState.snackbarHostState.showSnackbar(message).let {
-            when (it) {
-                SnackbarResult.Dismissed -> Log.d("TAG", "ScaffoldSnackbar: dismissed")
-                SnackbarResult.ActionPerformed -> TODO()
-            }
-        }
+        scaffoldState.snackbarHostState.showSnackbar(message)
     }
+}
+
+@ExperimentalCoilApi
+@Composable
+fun PokemonDetail(pokemon: Pokemon){
+
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .verticalScroll(scrollState)
+            .padding(8.dp)
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
+        PokemonDetailName(pokemonName = pokemon.name)
+        PokemonDetailGlobalInfos(pokemon = pokemon)
+    }
+}
+
+@Composable
+fun PokemonDetailName(pokemonName : String){
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        textAlign = TextAlign.Center,
+        text = pokemonName,
+        fontSize = 18.sp
+    )
+}
+
+@ExperimentalCoilApi
+@Composable
+fun PokemonDetailGlobalInfos(pokemon: Pokemon){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+    ) {
+        Image(
+            painter = rememberImagePainter(
+                data = pokemon.mainPictureUrl,
+                builder = {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_pokemon_placeholder)
+                    error(R.drawable.ic_pokemon_placeholder)
+                    diskCachePolicy(CachePolicy.ENABLED)
+                }
+            ),
+            contentDescription = "Image de ${pokemon.name}",
+            modifier = Modifier
+                .fillMaxWidth(0.50f)
+                .height(128.dp)
+        )
+        PokemonDetailCharacteristics()
+    }
+}
+
+@Composable
+fun PokemonDetailCharacteristics(){
+
 }
 

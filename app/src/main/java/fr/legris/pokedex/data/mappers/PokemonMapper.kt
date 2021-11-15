@@ -9,7 +9,7 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
         return PokemonEntity(
             apiModel.id,
             apiModel.name,
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${apiModel.id}.png"
+            apiModel.spritesDTO.front_default
         )
     }
 
@@ -20,9 +20,11 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
     }
 
     override fun mapFromDbEntityToModelUi(dbEntity: PokemonEntity): Pokemon {
+        val name = dbEntity.name.replaceFirstChar(Char::titlecase)
         return Pokemon(
             dbEntity.id,
-            dbEntity.name
+            name,
+            dbEntity.mainPictureUrl
         )
     }
 }
