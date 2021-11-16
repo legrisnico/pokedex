@@ -32,6 +32,7 @@ import coil.request.CachePolicy
 import coil.transform.CircleCropTransformation
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
+import fr.legris.pokedex.ui.theme.electricTypeColorDark
 import fr.legris.pokedex.utils.Resource
 
 @ExperimentalCoilApi
