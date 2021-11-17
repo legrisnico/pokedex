@@ -12,7 +12,8 @@ class PokemonListMapper: DbEntityMapper<PokemonEntity, PokemonFromListDTO, Pokem
         return PokemonEntity(
             id,
             apiModel.name,
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png",
+            emptyList()
         )
     }
 
