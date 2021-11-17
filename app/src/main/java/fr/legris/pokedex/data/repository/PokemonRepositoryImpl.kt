@@ -41,12 +41,14 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override fun getPokemonById(id: Int): LiveData<Resource<Pokemon>> {
+        val pokemonMapper = PokemonMapper()
         return performGetOperation(
-        databaseQuery = { pokemonDao.findById(id) },
-        networkCall = { getResult { pokemonService.getPokemonById(id) } },
-        saveCallResult = { pokemonDao.insert(PokemonMapper().mapFromApiModel(it)) },
-        mapper = PokemonMapper()
-    )}
+            databaseQuery = { pokemonDao.findById(id) },
+            networkCall = { getResult { pokemonService.getPokemonById(id) } },
+            saveCallResult = { pokemonDao.insert(pokemonMapper.mapFromApiModel(it)) },
+            mapper = pokemonMapper
+        )
+    }
 
     private suspend fun <T> getResult(call: suspend () -> Response<T>): Resource<T> {
         try {
