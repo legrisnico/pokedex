@@ -1,6 +1,5 @@
 package fr.legris.pokedex.data.mappers
 
-import androidx.compose.ui.text.intl.Locale
 import fr.legris.pokedex.data.api.model.PokemonFromListDTO
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
 import fr.legris.pokedex.ui.model.PokemonFromList
@@ -15,12 +14,6 @@ class PokemonListMapper: DbEntityMapper<PokemonEntity, PokemonFromListDTO, Pokem
             "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png",
             emptyList()
         )
-    }
-
-    override fun mapFromApiModelList(apiModelList: List<PokemonFromListDTO>): List<PokemonEntity>  {
-        return apiModelList.map { pokemon ->
-            mapFromApiModel(pokemon)
-        }
     }
 
     override fun mapFromDbEntityToModelUi(dbEntity: PokemonEntity): PokemonFromList {
