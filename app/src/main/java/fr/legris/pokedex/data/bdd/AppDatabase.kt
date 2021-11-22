@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import fr.legris.pokedex.data.bdd.dao.PokemonDao
 import fr.legris.pokedex.data.bdd.dao.PokemonFromListDao
+import fr.legris.pokedex.data.bdd.model.Converters
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
 
 @Database(entities = [PokemonEntity::class], version = 1)

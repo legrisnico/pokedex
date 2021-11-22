@@ -1,11 +1,8 @@
 package fr.legris.pokedex.ui.pokemondetail
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
@@ -136,12 +133,20 @@ fun PokemonDetail(pokemon: Pokemon){
 
     val scrollState = rememberScrollState()
 
+    val backgroundColor =
+    if(isSystemInDarkTheme()){
+        pokemon.types[0].typeColorDark
+    }else{
+        pokemon.types[0].typeColorLight
+    }
+
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
             .padding(8.dp)
             .fillMaxHeight()
             .fillMaxWidth()
+            .background(backgroundColor)
     ) {
         PokemonDetailName(pokemonName = pokemon.name)
         PokemonDetailGlobalInfos(pokemon = pokemon)

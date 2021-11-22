@@ -2,6 +2,7 @@ package fr.legris.pokedex.data.bdd.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import fr.legris.pokedex.data.bdd.model.Converters
 import fr.legris.pokedex.data.bdd.model.PokemonEntity
 
 @Dao
