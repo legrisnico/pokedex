@@ -14,8 +14,8 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
             name = apiModel.name,
             mainPictureUrl = apiModel.spritesDTO.front_default,
             typeEntities = apiModel.types.map { mapTypeDTOToTypeEntity(it) },
-            weight = apiModel.weight,
-            height = apiModel.height,
+            weight = apiModel.weight*0.1f,
+            height = apiModel.height*0.1f,
             baseExperience = apiModel.baseExperience
         )
     }
@@ -33,8 +33,8 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
             name = name,
             mainPictureUrl = dbEntity.mainPictureUrl,
             types = dbEntity.typeEntities?.map { mapTypeEntityToModelUi(it) } ?: listOf(),
-            weight = dbEntity.weight ?: 0,
-            height = dbEntity.height ?: 0,
+            weight = dbEntity.weight ?: 0.0f,
+            height = dbEntity.height ?: 0.0f,
             baseExperience = dbEntity.baseExperience ?: 0
         )
     }

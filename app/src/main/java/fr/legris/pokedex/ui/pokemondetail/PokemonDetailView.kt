@@ -134,25 +134,17 @@ fun PokemonDetail(pokemon: Pokemon) {
 
     val scrollState = rememberScrollState()
 
-    val animatedBackgroundColor = animateColorAsState(
-        targetValue = when {
-            pokemon.types.isEmpty() -> {
-                MaterialTheme.colors.surface
-            }
-            isSystemInDarkTheme() -> {
-                pokemon.types[0].typeColorDark
-            }
-            else -> {
-                pokemon.types[0].typeColorLight
-            }
+    val animatedTopBarColor = animateColorAsState(
+        targetValue = if (pokemon.types.isNotEmpty()) {
+            pokemon.types[0].typeColor
+        } else {
+            MaterialTheme.colors.primaryVariant
         },
-        animationSpec = tween(durationMillis = 200)
+        animationSpec = tween(durationMillis = 300)
     )
 
-    if (pokemon.types.isNotEmpty()) {
-        rememberSystemUiController()
-            .setSystemBarsColor(color = pokemon.types[0].typeColor)
-    }
+    rememberSystemUiController()
+        .setSystemBarsColor(color = animatedTopBarColor.value)
 
     Column(
         modifier = Modifier
@@ -185,7 +177,7 @@ fun PokemonDetailGlobalInfos(pokemon: Pokemon) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
     ) {
         Image(
             painter = rememberImagePainter(
@@ -210,12 +202,33 @@ fun PokemonDetailGlobalInfos(pokemon: Pokemon) {
 @Composable
 fun PokemonDetailCharacteristics(pokemon: Pokemon) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = pokemon.height.toString())
-        Text(text = pokemon.weight.toString())
-        Text(text = pokemon.baseExperience.toString())
+        PokemonDetailCharacteristicItem(
+            iconId = R.drawable.ic_height,
+            text = stringResource(R.string.pokemon_detail_height, pokemon.height)
+        )
+        PokemonDetailCharacteristicItem(
+            iconId = R.drawable.ic_weight,
+            text = stringResource(R.string.pokemon_detail_weight, pokemon.weight)
+        )
+        PokemonDetailCharacteristicItem(
+            iconId = R.drawable.ic_xp,
+            text = stringResource(R.string.pokemon_detail_xp, pokemon.baseExperience)
+        )
         pokemon.types.map {
             PokemonDetailTypeItem(type = it)
         }
+    }
+}
+
+@Composable
+fun PokemonDetailCharacteristicItem(iconId : Int, text : String){
+    Row(
+        modifier = Modifier.padding(4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(painter = painterResource(iconId), contentDescription = "")
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = text)
     }
 }
 

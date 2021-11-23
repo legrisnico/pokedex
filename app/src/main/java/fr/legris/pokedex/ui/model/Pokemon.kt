@@ -5,7 +5,7 @@ data class Pokemon(
     val name: String,
     val mainPictureUrl: String,
     val types : List<Type>,
-    val weight: Int,
-    val height: Int,
+    val weight: Float,
+    val height: Float,
     val baseExperience: Int,
 ) : ModelUi

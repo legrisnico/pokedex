@@ -17,9 +17,9 @@ data class PokemonEntity(
     @ColumnInfo(name = "types")
     val typeEntities: List<TypeEntity>? = null,
     @ColumnInfo(name = "weight")
-    val weight: Int? = null,
+    val weight: Float? = null,
     @ColumnInfo(name = "height")
-    val height: Int? = null,
+    val height: Float? = null,
     @ColumnInfo(name = "base_experience")
     val baseExperience: Int? = null,
 ) : DbEntity

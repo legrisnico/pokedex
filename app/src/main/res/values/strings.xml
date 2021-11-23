@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Pokedex</string>
     <string name="title_activity_main">MainActivity</string>
+
     <string name="error_pokemon_detail_default">Une erreur est survenue lors de la récupération du Pokémon</string>
+
+    <string name="pokemon_detail_height">%.1f m</string>
+    <string name="pokemon_detail_weight">%.1f kg</string>
+    <string name="pokemon_detail_xp">%d base xp</string>
 </resources>
