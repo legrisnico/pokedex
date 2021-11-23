@@ -14,6 +14,12 @@ data class PokemonEntity(
     val name: String,
     @ColumnInfo(name = "main_picture_url")
     val mainPictureUrl: String,
-    @ColumnInfo(name= "types")
-    val typeEntities : List<TypeEntity>? = null
-): DbEntity
+    @ColumnInfo(name = "types")
+    val typeEntities: List<TypeEntity>? = null,
+    @ColumnInfo(name = "weight")
+    val weight: Int? = null,
+    @ColumnInfo(name = "height")
+    val height: Int? = null,
+    @ColumnInfo(name = "base_experience")
+    val baseExperience: Int? = null,
+) : DbEntity

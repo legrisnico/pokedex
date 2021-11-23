@@ -1,12 +1,13 @@
 package fr.legris.pokedex.ui.pokemondetail
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyGridScope
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,11 +28,16 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
+import fr.legris.pokedex.ui.model.Type
+import fr.legris.pokedex.ui.pokemonlist.Pokemon
+import fr.legris.pokedex.ui.theme.PokedexTheme
 import fr.legris.pokedex.ui.theme.electricTypeColorDark
 import fr.legris.pokedex.utils.Resource
 
+@ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailView(
@@ -127,30 +133,48 @@ fun ErrorSnackBar(scaffoldState: ScaffoldState, message: String) {
     }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetail(pokemon: Pokemon){
 
     val scrollState = rememberScrollState()
 
-    val backgroundColor =
-    if(isSystemInDarkTheme()){
-        pokemon.types[0].typeColorDark
-    }else{
-        pokemon.types[0].typeColorLight
+    val animatedBackgroundColor = animateColorAsState(
+        targetValue = when {
+            pokemon.types.isEmpty() -> {
+                MaterialTheme.colors.surface
+            }
+            isSystemInDarkTheme() -> {
+                pokemon.types[0].typeColorDark
+            }
+            else -> {
+                pokemon.types[0].typeColorLight
+            }
+        },
+        animationSpec = tween(durationMillis = 200)
+    )
+
+    if(pokemon.types.isNotEmpty()) {
+        rememberSystemUiController()
+            .setSystemBarsColor(color = pokemon.types[0].typeColor)
     }
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(8.dp)
-            .fillMaxHeight()
-            .fillMaxWidth()
-            .background(backgroundColor)
-    ) {
-        PokemonDetailName(pokemonName = pokemon.name)
-        PokemonDetailGlobalInfos(pokemon = pokemon)
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .fillMaxHeight()
+        .background(animatedBackgroundColor.value)) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            PokemonDetailName(pokemonName = pokemon.name)
+            PokemonDetailGlobalInfos(pokemon = pokemon)
+        }
     }
+
 }
 
 @Composable
@@ -165,6 +189,7 @@ fun PokemonDetailName(pokemonName : String){
     )
 }
 
+@ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailGlobalInfos(pokemon: Pokemon){
@@ -188,12 +213,25 @@ fun PokemonDetailGlobalInfos(pokemon: Pokemon){
                 .fillMaxWidth(0.50f)
                 .height(128.dp)
         )
-        PokemonDetailCharacteristics()
+        PokemonDetailCharacteristics(pokemon = pokemon)
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun PokemonDetailCharacteristics(pokemon : Pokemon){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(text = pokemon.height.toString())
+        Text(text = pokemon.weight.toString())
+        Text(text = pokemon.baseExperience.toString())
+        pokemon.types.map {
+            PokemonDetailTypeItem(type = it)
+        }
     }
 }
 
 @Composable
-fun PokemonDetailCharacteristics(){
-
+fun PokemonDetailTypeItem(type : Type){
+    Text(text = type.typeName)
 }
 

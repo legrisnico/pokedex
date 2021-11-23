@@ -10,10 +10,13 @@ import fr.legris.pokedex.ui.model.Type
 class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
     override fun mapFromApiModel(apiModel: PokemonDTO): PokemonEntity {
         return PokemonEntity(
-            apiModel.id,
-            apiModel.name,
-            apiModel.spritesDTO.front_default,
-            apiModel.types.map { mapTypeDTOToTypeEntity(it) }
+            id = apiModel.id,
+            name = apiModel.name,
+            mainPictureUrl = apiModel.spritesDTO.front_default,
+            typeEntities = apiModel.types.map { mapTypeDTOToTypeEntity(it) },
+            weight = apiModel.weight,
+            height = apiModel.height,
+            baseExperience = apiModel.baseExperience
         )
     }
 
@@ -26,21 +29,24 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
     override fun mapFromDbEntityToModelUi(dbEntity: PokemonEntity): Pokemon {
         val name = dbEntity.name.replaceFirstChar(Char::titlecase)
         return Pokemon(
-            dbEntity.id,
-            name,
-            dbEntity.mainPictureUrl,
-            dbEntity.typeEntities.map { mapTypeEntityToModelUi(it) }
+            id = dbEntity.id,
+            name = name,
+            mainPictureUrl = dbEntity.mainPictureUrl,
+            types = dbEntity.typeEntities?.map { mapTypeEntityToModelUi(it) } ?: listOf(),
+            weight = dbEntity.weight ?: 0,
+            height = dbEntity.height ?: 0,
+            baseExperience = dbEntity.baseExperience ?: 0
         )
     }
 
     private fun mapTypeDTOToTypeEntity(typesDto : TypesDTO) : TypeEntity{
         return TypeEntity(
-            typesDto.slot,
-            typesDto.typeDTO.name
+            slot = typesDto.slot,
+            name = typesDto.typeDTO.name
         )
     }
 
     private fun mapTypeEntityToModelUi(typeEntity: TypeEntity) : Type{
-        return Type.values().firstOrNull { typeEnum -> typeEntity.name == typeEnum.name } ?: Type.UNKNOWN
+        return Type.values().firstOrNull { typeEnum -> typeEntity.name == typeEnum.typeName } ?: Type.UNKNOWN
     }
 }
