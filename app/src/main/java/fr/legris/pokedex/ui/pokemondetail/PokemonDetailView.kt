@@ -5,13 +5,16 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -218,8 +221,11 @@ fun PokemonDetailCharacteristics(pokemon: Pokemon) {
             iconId = R.drawable.ic_xp,
             text = stringResource(R.string.pokemon_detail_xp, pokemon.baseExperience)
         )
-        pokemon.types.map {
-            PokemonDetailTypeItem(type = it)
+        Spacer(modifier = Modifier.height(4.dp))
+        Row {
+            pokemon.types.map {
+                PokemonDetailTypeItem(type = it)
+            }
         }
     }
 }
@@ -238,7 +244,17 @@ fun PokemonDetailCharacteristicItem(iconId : Int, text : String){
 
 @Composable
 fun PokemonDetailTypeItem(type: Type) {
-    Text(text = type.typeName)
+    Box(
+        modifier = Modifier
+            .background(type.typeColor, shape = RoundedCornerShape(15))
+            .border(1.dp, MaterialTheme.colors.onSurface, shape = RoundedCornerShape(15))
+    ) {
+        Text(
+            text = type.typeName,
+            modifier = Modifier.padding(4.dp)
+        )
+    }
+    Spacer(modifier = Modifier.width(4.dp))
 }
 
 
