@@ -10,9 +10,9 @@ class PokemonListMapper: DbEntityMapper<PokemonEntity, PokemonFromListDTO, Pokem
     override fun mapFromApiModel(apiModel: PokemonFromListDTO): PokemonEntity {
         val id = apiModel.url.split("/")[apiModel.url.split("/").size - 2].toInt()
         return PokemonEntity(
-            id,
-            apiModel.name,
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
+            id = id,
+            name = apiModel.name,
+            mainPictureUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png"
         )
     }
 

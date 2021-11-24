@@ -10,6 +10,8 @@ import androidx.room.TypeConverters
 data class PokemonEntity(
     @PrimaryKey
     val id: Int,
+    @ColumnInfo(name = "detail_complete")
+    val detailComplete : Boolean = false,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "main_picture_url")

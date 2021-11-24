@@ -11,6 +11,7 @@ class PokemonMapper : DbEntityMapper<PokemonEntity, PokemonDTO, Pokemon> {
     override fun mapFromApiModel(apiModel: PokemonDTO): PokemonEntity {
         return PokemonEntity(
             id = apiModel.id,
+            detailComplete = true,
             name = apiModel.name,
             mainPictureUrl = apiModel.spritesDTO.front_default,
             typeEntities = apiModel.types.map { mapTypeDTOToTypeEntity(it) },

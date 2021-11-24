@@ -14,7 +14,7 @@ interface PokemonFromListDao {
     @Query("SELECT * FROM pokemonEntity WHERE id LIKE :id LIMIT 1")
     fun findById(id : Int): LiveData<PokemonEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(pokemonList: List<PokemonEntity>)
 
     @Delete
