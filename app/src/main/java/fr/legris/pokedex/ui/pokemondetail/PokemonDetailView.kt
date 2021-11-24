@@ -1,19 +1,19 @@
 package fr.legris.pokedex.ui.pokemondetail
 
+import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,26 +43,28 @@ fun PokemonDetailView(
         scaffoldState = scaffoldState,
     )
     {
-        when (pokemon?.status) {
-            Resource.Status.LOADING -> {
 
-            }
+        PokemonDetail(pokemon = pokemon?.data)
+
+        when (pokemon?.status) {
+            Resource.Status.LOADING -> { }
             Resource.Status.SUCCESS -> {
                 if (pokemon?.data == null) {
-                    ErrorSnackBar(
-                        scaffoldState = scaffoldState,
-                        message = pokemon?.message
-                            ?: stringResource(R.string.error_pokemon_detail_default)
-                    )
+                    Toast.makeText(
+                        LocalContext.current,
+                        pokemon?.message
+                            ?: stringResource(R.string.error_pokemon_detail_default),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                PokemonDetail(pokemon = pokemon?.data!!)
             }
             Resource.Status.ERROR -> {
-                ErrorSnackBar(
-                    scaffoldState = scaffoldState,
-                    message = pokemon?.message
-                        ?: stringResource(R.string.error_pokemon_detail_default)
-                )
+                Toast.makeText(
+                    LocalContext.current,
+                    pokemon?.message
+                        ?: stringResource(R.string.error_pokemon_detail_default),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         }
@@ -130,30 +132,32 @@ fun ErrorSnackBar(scaffoldState: ScaffoldState, message: String) {
 @ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable
-fun PokemonDetail(pokemon: Pokemon) {
+fun PokemonDetail(pokemon: Pokemon?) {
 
     val scrollState = rememberScrollState()
 
-    val animatedTopBarColor = animateColorAsState(
-        targetValue = if (pokemon.types.isNotEmpty()) {
-            pokemon.types[0].typeColor
-        } else {
-            MaterialTheme.colors.primaryVariant
-        },
-        animationSpec = tween(durationMillis = 300)
-    )
+    if(pokemon != null) {
+        val animatedTopBarColor = animateColorAsState(
+            targetValue = if (pokemon.types.isNotEmpty()) {
+                pokemon.types[0].typeColor
+            } else {
+                MaterialTheme.colors.primaryVariant
+            },
+            animationSpec = tween(durationMillis = 300)
+        )
 
-    rememberSystemUiController()
-        .setSystemBarsColor(color = animatedTopBarColor.value)
+        rememberSystemUiController()
+            .setSystemBarsColor(color = animatedTopBarColor.value)
 
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .padding(8.dp)
-            .fillMaxWidth()
-    ) {
-        PokemonDetailName(pokemonName = pokemon.name)
-        PokemonDetailGlobalInfos(pokemon = pokemon)
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            PokemonDetailName(pokemonName = pokemon.name)
+            PokemonDetailGlobalInfos(pokemon = pokemon)
+        }
     }
 
 }
@@ -236,4 +240,5 @@ fun PokemonDetailCharacteristicItem(iconId : Int, text : String){
 fun PokemonDetailTypeItem(type: Type) {
     Text(text = type.typeName)
 }
+
 

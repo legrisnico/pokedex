@@ -19,5 +19,8 @@ interface PokemonDao {
 
     @Query("DELETE FROM pokemonEntity")
     suspend fun deleteAll()
+
+    @Query("SELECT COUNT(*) FROM pokemonEntity WHERE id LIKE :id AND detail_complete LIKE 1")
+    suspend fun exist(id: Int): Boolean
 }
 
