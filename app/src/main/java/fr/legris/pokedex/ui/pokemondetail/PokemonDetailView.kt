@@ -74,64 +74,6 @@ fun PokemonDetailView(
     }
 }
 
-@ExperimentalCoilApi
-@Composable
-fun LoadingScreen() {
-    val infiniteTransition = rememberInfiniteTransition()
-
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.2f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 500,
-                easing = FastOutSlowInEasing,
-                delayMillis = 100
-            ),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
-    val rotate by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1000,
-                easing = FastOutSlowInEasing,
-                delayMillis = 200
-            ),
-            repeatMode = RepeatMode.Restart,
-        )
-    )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        contentAlignment = Alignment.Center
-    )
-    {
-        Image(
-            painter = painterResource(id = R.drawable.ic_pokeball_loading),
-            contentDescription = "Chargement",
-            modifier = Modifier
-                .fillMaxWidth(0.50f)
-                .fillMaxHeight()
-                .scale(scale)
-                .rotate(rotate),
-            contentScale = ContentScale.Inside
-        )
-    }
-}
-
-@Composable
-fun ErrorSnackBar(scaffoldState: ScaffoldState, message: String) {
-    LaunchedEffect(scaffoldState.snackbarHostState) {
-        scaffoldState.snackbarHostState.showSnackbar(message)
-    }
-}
-
 @ExperimentalFoundationApi
 @ExperimentalCoilApi
 @Composable

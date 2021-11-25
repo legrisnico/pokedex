@@ -13,6 +13,8 @@ class PokemonListViewModel @Inject constructor(
     pokemonRepository: PokemonRepository
 ) : ViewModel() {
 
+
     @ExperimentalPagingApi
     val pokemonFlow = pokemonRepository.getPokemonList().cachedIn(viewModelScope)
+
 }

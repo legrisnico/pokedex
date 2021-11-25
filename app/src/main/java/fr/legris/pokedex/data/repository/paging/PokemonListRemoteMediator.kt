@@ -47,14 +47,9 @@ class PokemonListRemoteMediator(
 
             val result = response.body() ?: PokemonListDTO(0,null, null, listOf())
 
-            if (loadType == LoadType.REFRESH) {
-                pokemonFromListDao.deleteAll()
-            }
-
             pokemonFromListDao.insertAll(
                 PokemonListMapper().mapFromApiModelList(result.results)
             )
-
 
             MediatorResult.Success(
                 endOfPaginationReached = result.next == null
