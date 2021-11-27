@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
                             "$NAV_POKEMON_DETAIL/{$ARG_POKEMON_ID}",
                             listOf(navArgument(ARG_POKEMON_ID) { type = NavType.IntType })
                         ) {
-                            PokemonDetailView()
+                            PokemonDetailView(navController)
                         }
 
                     }

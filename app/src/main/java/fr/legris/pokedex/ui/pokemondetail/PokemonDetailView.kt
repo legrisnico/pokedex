@@ -7,6 +7,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
@@ -36,32 +39,29 @@ import fr.legris.pokedex.utils.Resource
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailView(
+    navController : NavHostController,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
     val pokemon: Resource<Pokemon?>? by viewModel.pokemon.observeAsState()
 
-    val scaffoldState = rememberScaffoldState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-    )
-    {
+    PokemonDetail(pokemon = pokemon?.data)
+    IconButton(
+        modifier = Modifier.padding(8.dp),
+        onClick = {
+            navController.popBackStack()
+        }) {
+        Icon(
+            Icons.Filled.ArrowBack,
+            "Bouton retour",
+            tint = MaterialTheme.colors.onSurface)
+    }
 
-        PokemonDetail(pokemon = pokemon?.data)
-
-        when (pokemon?.status) {
-            Resource.Status.LOADING -> { }
-            Resource.Status.SUCCESS -> {
-                if (pokemon?.data == null) {
-                    Toast.makeText(
-                        LocalContext.current,
-                        pokemon?.message
-                            ?: stringResource(R.string.error_pokemon_detail_default),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            Resource.Status.ERROR -> {
+    when (pokemon?.status) {
+        Resource.Status.LOADING -> {
+        }
+        Resource.Status.SUCCESS -> {
+            if (pokemon?.data == null) {
                 Toast.makeText(
                     LocalContext.current,
                     pokemon?.message
@@ -69,8 +69,16 @@ fun PokemonDetailView(
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
         }
+        Resource.Status.ERROR -> {
+            Toast.makeText(
+                LocalContext.current,
+                pokemon?.message
+                    ?: stringResource(R.string.error_pokemon_detail_default),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
     }
 }
 
@@ -81,7 +89,7 @@ fun PokemonDetail(pokemon: Pokemon?) {
 
     val scrollState = rememberScrollState()
 
-    if(pokemon != null) {
+    if (pokemon != null) {
         val animatedTopBarColor = animateColorAsState(
             targetValue = if (pokemon.types.isNotEmpty()) {
                 pokemon.types[0].typeColor
@@ -173,7 +181,7 @@ fun PokemonDetailCharacteristics(pokemon: Pokemon) {
 }
 
 @Composable
-fun PokemonDetailCharacteristicItem(iconId : Int, text : String){
+fun PokemonDetailCharacteristicItem(iconId: Int, text: String) {
     Row(
         modifier = Modifier.padding(4.dp),
         verticalAlignment = Alignment.CenterVertically
