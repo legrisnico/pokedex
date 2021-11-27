@@ -5,6 +5,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import coil.request.CachePolicy
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fr.legris.pokedex.R
 import fr.legris.pokedex.ui.model.Pokemon
+import fr.legris.pokedex.ui.model.Stat
 import fr.legris.pokedex.ui.model.Type
 import fr.legris.pokedex.utils.Resource
 
@@ -111,6 +113,7 @@ fun PokemonDetail(pokemon: Pokemon?) {
         ) {
             PokemonDetailName(pokemonName = pokemon.name)
             PokemonDetailGlobalInfos(pokemon = pokemon)
+            PokemonDetailStats(stats = pokemon.stats)
         }
     }
 
@@ -165,14 +168,15 @@ fun PokemonDetailMainPicture(pokemon: Pokemon) {
             .width(136.dp)
             .height(136.dp)
             .padding(8.dp)
-            .border(2.dp, color = borderColor, shape = RoundedCornerShape(5))
     )
 }
 
 @ExperimentalFoundationApi
 @Composable
 fun PokemonDetailCharacteristics(pokemon: Pokemon) {
-    Column(modifier = Modifier.fillMaxWidth().padding(start = 8.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 8.dp)) {
         PokemonDetailCharacteristicItem(
             iconId = R.drawable.ic_height,
             text = stringResource(R.string.pokemon_detail_height, pokemon.height)
@@ -221,4 +225,20 @@ fun PokemonDetailTypeItem(type: Type) {
     Spacer(modifier = Modifier.width(4.dp))
 }
 
+@Composable
+fun PokemonDetailStats(stats : List<Stat>){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        stats.map { stat ->
+            PokemonDetailStat(stat = stat)
+        }
+    }
+}
+
+@Composable
+fun PokemonDetailStat(stat : Stat){
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(modifier = Modifier.fillMaxWidth(0.5f), text = stat.statName)
+        Text(modifier = Modifier.fillMaxWidth(0.5f), text = stat.statValue.toString())
+    }
+}
 

@@ -15,4 +15,15 @@ class Converters {
     fun typeEntityToString(type: List<TypeEntity>?): String? {
         return Gson().toJson(type)
     }
+
+    @TypeConverter
+    fun statEntityFromString(value: String?): List<StatEntity>? {
+        val itemType = object : TypeToken<List<StatEntity>>() {}.type
+        return value?.let { Gson().fromJson(it, itemType) }
+    }
+
+    @TypeConverter
+    fun statEntityToString(type: List<StatEntity>?): String? {
+        return Gson().toJson(type)
+    }
 }
