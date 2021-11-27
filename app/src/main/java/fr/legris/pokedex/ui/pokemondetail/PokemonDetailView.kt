@@ -39,7 +39,7 @@ import fr.legris.pokedex.utils.Resource
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailView(
-    navController : NavHostController,
+    navController: NavHostController,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
     val pokemon: Resource<Pokemon?>? by viewModel.pokemon.observeAsState()
@@ -54,7 +54,8 @@ fun PokemonDetailView(
         Icon(
             Icons.Filled.ArrowBack,
             "Bouton retour",
-            tint = MaterialTheme.colors.onSurface)
+            tint = MaterialTheme.colors.onSurface
+        )
     }
 
     when (pokemon?.status) {
@@ -136,29 +137,42 @@ fun PokemonDetailGlobalInfos(pokemon: Pokemon) {
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        Image(
-            painter = rememberImagePainter(
-                data = pokemon.mainPictureUrl,
-                builder = {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_pokemon_placeholder)
-                    error(R.drawable.ic_pokemon_placeholder)
-                    diskCachePolicy(CachePolicy.ENABLED)
-                }
-            ),
-            contentDescription = "Image de ${pokemon.name}",
-            modifier = Modifier
-                .fillMaxWidth(0.50f)
-                .height(128.dp)
-        )
+        PokemonDetailMainPicture(pokemon = pokemon)
         PokemonDetailCharacteristics(pokemon = pokemon)
     }
+}
+
+@ExperimentalCoilApi
+@Composable
+fun PokemonDetailMainPicture(pokemon: Pokemon) {
+    val borderColor = if (pokemon.types.isNotEmpty()) {
+        pokemon.types[0].typeColor
+    } else {
+        MaterialTheme.colors.onSurface
+    }
+    Image(
+        painter = rememberImagePainter(
+            data = pokemon.mainPictureUrl,
+            builder = {
+                crossfade(true)
+                placeholder(R.drawable.ic_pokemon_placeholder)
+                error(R.drawable.ic_pokemon_placeholder)
+                diskCachePolicy(CachePolicy.ENABLED)
+            }
+        ),
+        contentDescription = "Image de ${pokemon.name}",
+        modifier = Modifier
+            .width(136.dp)
+            .height(136.dp)
+            .padding(8.dp)
+            .border(2.dp, color = borderColor, shape = RoundedCornerShape(5))
+    )
 }
 
 @ExperimentalFoundationApi
 @Composable
 fun PokemonDetailCharacteristics(pokemon: Pokemon) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.fillMaxWidth().padding(start = 8.dp)) {
         PokemonDetailCharacteristicItem(
             iconId = R.drawable.ic_height,
             text = stringResource(R.string.pokemon_detail_height, pokemon.height)
