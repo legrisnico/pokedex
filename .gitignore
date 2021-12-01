@@ -85,3 +85,6 @@ lint/tmp/
 # lint/reports/
 
 .idea/
+
+#Credentials files
+pokedex-d7f86-6d4a0f74b169.json
