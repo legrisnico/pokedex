@@ -33,8 +33,8 @@ android {
 
             firebaseAppDistribution {
                 releaseNotesFile="releasenotes.txt"
-                testers="legris.nicolas06@gmail.com"
-                serviceCredentialsFile="pokedex-d7f86-6d4a0f74b169.json"
+                testers="legris.nicolas@outlook.com"
+                serviceCredentialsFile="credentials/pokedex-d7f86-6d4a0f74b169.json"
             }
         }
         release {
