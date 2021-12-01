@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "611090009902",
+    "project_id": "pokedex-d7f86",
+    "storage_bucket": "pokedex-d7f86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611090009902:android:9b8a839e43a3836fc074bf",
+        "android_client_info": {
+          "package_name": "fr.legris.pokedex.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611090009902-964jv3r9m5isg4ossb797219fmeilj23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8bliPgH8vJDmWF1mdjMgztqbz0IfcaWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611090009902-964jv3r9m5isg4ossb797219fmeilj23.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

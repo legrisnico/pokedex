@@ -148,11 +148,6 @@ fun PokemonDetailGlobalInfos(pokemon: Pokemon) {
 @ExperimentalCoilApi
 @Composable
 fun PokemonDetailMainPicture(pokemon: Pokemon) {
-    val borderColor = if (pokemon.types.isNotEmpty()) {
-        pokemon.types[0].typeColor
-    } else {
-        MaterialTheme.colors.onSurface
-    }
     Image(
         painter = rememberImagePainter(
             data = pokemon.mainPictureUrl,
@@ -227,7 +222,14 @@ fun PokemonDetailTypeItem(type: Type) {
 
 @Composable
 fun PokemonDetailStats(stats : List<Stat>){
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        text = stringResource(R.string.pokemon_detail_subtitle_base_stats),
+        fontSize = 16.sp
+    )
+    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         stats.map { stat ->
             PokemonDetailStat(stat = stat)
         }
@@ -237,8 +239,8 @@ fun PokemonDetailStats(stats : List<Stat>){
 @Composable
 fun PokemonDetailStat(stat : Stat){
     Row(modifier = Modifier.fillMaxWidth()) {
-        Text(modifier = Modifier.fillMaxWidth(0.5f), text = stat.statName)
-        Text(modifier = Modifier.fillMaxWidth(0.5f), text = stat.statValue.toString())
+        Text(modifier = Modifier.fillMaxWidth(0.7f).padding(4.dp), text = stat.statName)
+        Text(modifier = Modifier.fillMaxWidth(0.3f).padding(4.dp), text = stat.statValue.toString())
     }
 }
 

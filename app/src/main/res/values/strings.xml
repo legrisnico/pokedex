@@ -7,4 +7,5 @@
     <string name="pokemon_detail_height">%.1f m</string>
     <string name="pokemon_detail_weight">%.1f kg</string>
     <string name="pokemon_detail_xp">%d base xp</string>
+    <string name="pokemon_detail_subtitle_base_stats">Base statistics</string>
 </resources>
